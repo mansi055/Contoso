@@ -11,14 +11,19 @@ namespace Contoso.Controllers
     {
         BookingSystem db = new BookingSystem();
 
-        // GET: Appointment
+        //Getting initial values
         public ActionResult Index()
         {
+            AppointmentModel app = new AppointmentModel();
+
             var specialites = GetAllSpeciality();
-            return View(specialites);
+            var branches = GetAllRegion();
+
+            app.BranchNames = GetSelectListBranch(branches);
+            app.Specialities = GetSelectListItems(specialites);
+            return View(app);
         }
 
-        //For rendering values on view page
         private IEnumerable<string> GetAllSpeciality()
         {
             return new List<string>
@@ -31,76 +36,88 @@ namespace Contoso.Controllers
             };
         }
 
-        // GET: Appointment/Details/5
-        public ActionResult Details(int id)
+        private IEnumerable<string> GetAllRegion()
         {
-            return View();
+            BranchInfo br = new BranchInfo();
+            return br.GetAllBranchNames();            
+        }
+        private IEnumerable<SelectListItem> GetSelectListBranch(IEnumerable<string> elements)
+        {
+            // Create an empty list to hold result of the operation
+            var selectList = new List<SelectListItem>();
+
+            foreach (var element in elements)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = element,
+                    Text = element
+                });
+            }
+
+            return selectList;
         }
 
-        // GET: Appointment/Create
-        public ActionResult Create()
+
+        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
         {
-            return View();
+            // Create an empty list to hold result of the operation
+            var selectList = new List<SelectListItem>();
+
+            foreach (var element in elements)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = element,
+                    Text = element
+                });
+            }
+
+            return selectList;
         }
 
-        // POST: Appointment/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Index(AppointmentModel app)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            var specialities = GetAllSpeciality();
+            app.Specialities = GetSelectListItems(specialities);
 
-                return RedirectToAction("Index");
-            }
-            catch
+            var branches = GetAllRegion();
+            app.BranchNames = GetSelectListBranch(branches);
+
+            string selectedSpeciality = app.Speciality;
+            string selectedBranch = app.Address;
+
+            DoctorService docser = new DoctorService();
+
+            if (docser.GetSelectedDoctors(selectedSpeciality, selectedBranch) == null)
             {
-                return View();
+                return View("Index", app);
             }
+
+            ViewBag.selectdoc = docser.GetSelectedDoctors(selectedSpeciality, selectedBranch);
+            return View("Index", app);
+          
         }
 
-        // GET: Appointment/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult About()
         {
+            ViewBag.Message = "Your application description page.";
+
             return View();
         }
 
-        // POST: Appointment/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Done(AppointmentModel app)
         {
-            try
-            {
-                // TODO: Add update logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View(app);
         }
 
-        // GET: Appointment/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Contact()
         {
+            ViewBag.Message = "Your contact page.";
+
             return View();
-        }
-
-        // POST: Appointment/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

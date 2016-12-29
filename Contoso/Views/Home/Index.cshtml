@@ -1,39 +1,10 @@
-﻿@model Contoso.Models.AppointmentModel
-
+﻿
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    
 }
 
 <div class="jumbotron">
     <h1>CONTOSO</h1>
 </div>
 
-<div class="row">
-    <div class="col-sm-4 col-sm-offset-4">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { role = "form" }))
-                {
-                  <div class="form-group">
-                        @Html.LabelFor(m => m.Speciality)
-                        @Html.DropDownListFor(m => m.Speciality, // 1. Store selected value in Model.State;
-                                                            // when page is rendered after postback,
-                                                            // take selected value from Model.State.
 
-                                               Model.Specialities,
-
-                                              // 3. Text for the first 'default' option
-                                              "- Please select a speciality -",
-
-                                              //4. A class name to assign to <select> tag
-                                              new { @class = "form-control" })
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-
-                }
-            </div>
-        </div>
-    </div>
- </div>
