@@ -50,22 +50,42 @@
         </div>
     </div>
 </div>
-<p>@Model.Address</p>
 
 <div class="row">
     <div class="col-sm-4 col-lg-8">
         <div class="panel panel-info">
-            @if (ViewBag.selectdoc != null)
+            @using (Html.BeginForm("Done", "Appointment", FormMethod.Post, new { role = "form" }))
             {
-                foreach (var doc in ViewBag.selectdoc)
+                if (ViewBag.DoctorSchedule != null)
                 {
-                    <table>
-                        <tr>
-                            <td>
-                                @doc.FirstName
-                            </td>
-                        </tr>
-                    </table>
+                    foreach (var user in (Dictionary<Contoso.Models.User, List<Contoso.Models.Schedule>>)ViewBag.DoctorSchedule)
+                    {
+                        <table>
+                            <tr>
+                                <td>
+                                 @user.Key.FirstName
+                                </td>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <ul>
+                                                    @foreach (var item in user.Value)
+                                                    {
+                                                        <li>@item.Day </li>
+                                                        <li>@item.StartTime</li>
+                                                        <li>@item.EndTime</li>
+                                                        <li>@item.Room</li>
+                                                    <li>@Html.ActionLink("Done", "Index", new { id = @item.Room })</li>
+                                                    }
+                                                    </ul>
+</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    }
                 }
             }
         </div>

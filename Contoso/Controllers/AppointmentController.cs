@@ -24,6 +24,36 @@ namespace Contoso.Controllers
             return View(app);
         }
 
+
+        [HttpPost]
+        public ActionResult Index(AppointmentModel app)
+        {
+            var specialities = GetAllSpeciality();
+            app.Specialities = GetSelectListItems(specialities);
+
+            var branches = GetAllRegion();
+            app.BranchNames = GetSelectListBranch(branches);
+
+            string selectedSpeciality = app.Speciality;
+            string selectedBranch = app.Address;
+
+            DoctorService docser = new DoctorService();
+
+            List<User> usersList = docser.GetSelectedDoctors(selectedSpeciality, selectedBranch);
+
+            ViewBag.DoctorSchedule = docser.GetDoctorSchedule(usersList);
+
+            return View("Index", app);
+
+        }
+
+        [HttpGet]
+        public ActionResult Index(int? id)
+        {
+            ViewBag.scid = id;
+            return View(id);
+        }
+
         private IEnumerable<string> GetAllSpeciality()
         {
             return new List<string>
@@ -76,48 +106,6 @@ namespace Contoso.Controllers
             return selectList;
         }
 
-        [HttpPost]
-        public ActionResult Index(AppointmentModel app)
-        {
-            var specialities = GetAllSpeciality();
-            app.Specialities = GetSelectListItems(specialities);
 
-            var branches = GetAllRegion();
-            app.BranchNames = GetSelectListBranch(branches);
-
-            string selectedSpeciality = app.Speciality;
-            string selectedBranch = app.Address;
-
-            DoctorService docser = new DoctorService();
-
-            if (docser.GetSelectedDoctors(selectedSpeciality, selectedBranch) == null)
-            {
-                return View("Index", app);
-            }
-
-            ViewBag.selectdoc = docser.GetSelectedDoctors(selectedSpeciality, selectedBranch);
-            return View("Index", app);
-          
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Done(AppointmentModel app)
-        {
-
-            return View(app);
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
     }
 }

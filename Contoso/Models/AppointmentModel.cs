@@ -12,8 +12,6 @@ namespace Contoso.Models
 
         public string Address { get; set; }
 
-        public int BranchId { get; set; }
-
         // This property will hold all available specialities for selection
         public IEnumerable<SelectListItem> Specialities { get; set; }
 

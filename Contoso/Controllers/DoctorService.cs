@@ -22,7 +22,27 @@ namespace Contoso.Controllers
                         where d.Speciality == spec 
                         where d.BranchID == branchAddr                 
                         select us);
+
             return docs.ToList();
+        }
+
+        public Dictionary<User, List<Schedule>> GetDoctorSchedule(List<User> docs)
+        {
+            Dictionary<User, List<Schedule>> docsSchedule = new Dictionary<User, List<Schedule>>();
+
+            foreach (User us in docs)
+            {
+                int ft = (from d in db.Doctors
+                          where d.UserID == us.Id
+                          select d.Id).FirstOrDefault();
+                var schedule = (from sc in db.Schedules
+                                where sc.DoctorId == ft
+                                select sc);
+
+                docsSchedule.Add(us, schedule.ToList());
+            }
+
+            return docsSchedule;
         }
 
     }

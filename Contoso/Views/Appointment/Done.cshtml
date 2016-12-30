@@ -3,22 +3,5 @@
     ViewBag.Title = "Done";
 }
 
-
-<div class="row">
-    <div class="col-sm-4 col-lg-8">
-        <div class="panel panel-info">
-           @if (Model.SelectedDoctors != null) { 
-           foreach (var doc in Model.SelectedDoctors)
-           {
-                    <table>
-                        <tr>
-                            <td>
-                                @doc.Speciality
-                            </td>
-                        </tr>
-                    </table>
-                }
-            }
-        </div>
-    </div>
-</div>
+<p>Done!</p>
+<p>@ViewBag.scid</p>
