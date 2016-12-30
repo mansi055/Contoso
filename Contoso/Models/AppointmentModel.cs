@@ -16,5 +16,14 @@ namespace Contoso.Models
         public IEnumerable<SelectListItem> Specialities { get; set; }
 
         public virtual IEnumerable<SelectListItem> BranchNames { get; set; }
+
+        public int ScheduleId { get; set; }
+
+        public int DoctorId { get; set; }
+
+        public int UserId { get; set; }
+        public TimeSpan StartTime { get; set; }
+
+        public TimeSpan EndTime { get; set; }
     }
 }

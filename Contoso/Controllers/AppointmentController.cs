@@ -48,10 +48,12 @@ namespace Contoso.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index(int? id)
+        public ActionResult Done(AppointmentModel app)
         {
-            ViewBag.scid = id;
-            return View(id);
+            SlotInfo slot = new SlotInfo();
+            ViewBag.slots = slot.GetAvailableSlots(app);
+            
+            return View();
         }
 
         private IEnumerable<string> GetAllSpeciality()

@@ -4,4 +4,9 @@
 }
 
 <p>Done!</p>
-<p>@ViewBag.scid</p>
+@foreach(var s in ViewBag.slots)
+{
+    <p>@s</p>
+}
+
+ 

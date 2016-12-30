@@ -76,7 +76,11 @@
                                                         <li>@item.StartTime</li>
                                                         <li>@item.EndTime</li>
                                                         <li>@item.Room</li>
-                                                    <li>@Html.ActionLink("Done", "Index", new { id = @item.Room })</li>
+                                                    <li>@Html.ActionLink("Done", "Done", new { ScheduleId = @item.Id,
+                                                                                                UserId = @item.DoctorId,
+                                                                                                DoctorId = @user.Key.Id,
+                                                                                                EndTime = @item.EndTime,
+                                                                                                StartTime = @item.StartTime})</li>
                                                     }
                                                     </ul>
 </td>
