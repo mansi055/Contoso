@@ -12,12 +12,14 @@ namespace Contoso.Controllers
         // GET: ConfirmBooking
       
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult Index(AppointmentModel app)
         {
-            User us = app.UserCustomer;
+            /*DoctorService doc = new DoctorService();
+            User us = doc.GetUserCustomer(app);
             ViewBag.user = us;
-            return View("Index", app);
+            return View("Index", app);*/
+            return View();
 
         }
     }

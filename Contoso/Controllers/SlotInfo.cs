@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using Contoso.Models;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace Contoso.Controllers
 {
@@ -28,10 +32,11 @@ namespace Contoso.Controllers
             //return AvailableSlots(app.DoctorId, slots);
         }
 
-        public Dictionary<TimeSpan, string> AvailableSlots(int docid, List<TimeSpan> slots)
+        public Dictionary<int, Dictionary<TimeSpan, string>> AvailableSlots(int docid, List<TimeSpan> slots)
         {
-            Dictionary<TimeSpan, string> available = new Dictionary<TimeSpan, string>();
-
+            Dictionary<int, Dictionary<TimeSpan, string>> available = new Dictionary<int, Dictionary<TimeSpan, string>>();
+            Dictionary<TimeSpan, string> availableslot = new Dictionary<TimeSpan, string>();
+            
             foreach (TimeSpan st in slots)
             {
                 var result = (from s in sv.Slots
@@ -40,15 +45,28 @@ namespace Contoso.Controllers
                               select s);
                 if(result.Count() == 0)
                 {
-                    available.Add(st, "Available");
+                    availableslot.Add(st, "Available");
                 }
                 else
                 {
-                    available.Add(st, "Booked");
+                    availableslot.Add(st, "Booked");
                 }
             }
-            
-           return available;
+
+            available.Add(docid, availableslot);
+            return available;
         }
+
+        public int GetScheduleId(AppointmentModel app)
+        {
+            int scheduleid = (from sc in db.Schedules
+                              where sc.DoctorId == app.UserId
+                              select sc.Id).FirstOrDefault();
+
+            return scheduleid;
+        }
+
+    
+
      }
 }

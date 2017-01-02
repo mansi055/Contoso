@@ -45,6 +45,22 @@ namespace Contoso.Controllers
             return docsSchedule;
         }
 
+        public User GetUserCustomer(AppointmentModel app)
+        {
+            if(app.UserCustomer != null)
+            {
+                return app.UserCustomer;
+            }
+
+            return null;
+        }
+
+
+        public string GetSlotName(AppointmentModel app)
+        {
+            return app.SlotName;
+        }
+
     }
 }
 

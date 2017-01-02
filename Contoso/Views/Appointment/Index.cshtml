@@ -4,6 +4,9 @@
     ViewBag.Title = "Index";
 }
 
+
+
+
 <div class="jumbotron">
     <h1>CONTOSO</h1>
 </div>
@@ -27,6 +30,7 @@
 
                                               //4. A class name to assign to <select> tag
                                               new { @class = "form-control" })
+                        @Html.ValidationMessage("Speciality", "*")
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.Address)
@@ -41,9 +45,15 @@
 
                                               //4. A class name to assign to <select> tag
                                               new { @class = "form-control" })
+                       @Html.ValidationMessage("Address", "*")
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.SlotName)
+                        @Html.TextBoxFor(m => m.SlotName, new { @class = "form-control", id="requiredfield", onkeyup="stoppedTyping()"})
+                        @Html.ValidationMessage("SlotName", "Please enter your name.", new { @class = "text-danger" })
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
 
                 }
             </div>
@@ -76,11 +86,13 @@
                                                         <li>@item.StartTime</li>
                                                         <li>@item.EndTime</li>
                                                         <li>@item.Room</li>
-                                                    <li>@Html.ActionLink("Slots Available!", "Done", new { ScheduleId = @item.Id,
+                                                    <li>@Html.ActionLink("Book Available Slots!", "Done", new { ScheduleId = @item.Id,
                                                                                                 UserId = @item.DoctorId,
                                                                                                 DoctorId = @user.Key.Id,
                                                                                                 EndTime = @item.EndTime,
-                                                                                                StartTime = @item.StartTime})</li>
+                                                                                                StartTime = @item.StartTime,
+                                                                                                SlotName = Model.SlotName
+                                                    })</li>
                                                     }
                                                     </ul>
                                             </td>

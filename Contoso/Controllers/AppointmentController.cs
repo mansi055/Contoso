@@ -4,12 +4,16 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Contoso.Models;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace Contoso.Controllers
 {
     public class AppointmentController : Controller
     {
         BookingSystem db = new BookingSystem();
+        SlotBooking sb = new SlotBooking();
 
         //Getting initial values
         public ActionResult Index()
@@ -21,6 +25,7 @@ namespace Contoso.Controllers
 
             app.BranchNames = GetSelectListBranch(branches);
             app.Specialities = GetSelectListItems(specialites);
+
             return View(app);
         }
 
@@ -33,6 +38,7 @@ namespace Contoso.Controllers
 
             var branches = GetAllRegion();
             app.BranchNames = GetSelectListBranch(branches);
+            string slotName = app.SlotName;
 
             string selectedSpeciality = app.Speciality;
             string selectedBranch = app.Address;
@@ -42,20 +48,62 @@ namespace Contoso.Controllers
             List<User> usersList = docser.GetSelectedDoctors(selectedSpeciality, selectedBranch);
 
             ViewBag.DoctorSchedule = docser.GetDoctorSchedule(usersList);
-
+            ViewBag.Slotname = slotName;
             return View("Index", app);
 
         }
 
-        [HttpGet]
+       
         public ActionResult Done(AppointmentModel app)
         {
-            SlotInfo slot = new SlotInfo();
-            List<TimeSpan> slotList = slot.GetAvailableSlots(app);
-            ViewBag.availableSlots = slot.AvailableSlots(app.DoctorId, slotList);
+            SlotInfo slots = new SlotInfo();
+            List<TimeSpan> slotList = slots.GetAvailableSlots(app);
+            ViewBag.availableSlots = slots.AvailableSlots(app.DoctorId, slotList);  // ---
+
+
+            if (app.SlotSelected == true)
+            { 
+                try
+                {
+                    Slot slot = new Slot();
+                    slot.DoctorId = app.DoctorId; //user id
+                    slot.StartTime = app.SlotTime;
+                    TimeSpan endtime = app.EndTime;
+                    slot.SlotName = "mni";
+                    slot.SlotNumber = 2;
+                    app.ScheduleId = slots.GetScheduleId(app);
+
+
+                    if(ModelState.IsValid)
+                    {
+                        sb.Slots.Add(slot);
+                        sb.SaveChanges();
+                        //return RedirectToAction("Thankyou");
+                        return RedirectToAction("Index");
+                    }
+                }
+
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Debug.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Debug.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+                    throw;
+                }
+            }
+
             return View();
         }
 
+        
+        
         private IEnumerable<string> GetAllSpeciality()
         {
             return new List<string>
@@ -68,21 +116,29 @@ namespace Contoso.Controllers
             };
         }
 
+
         private IEnumerable<string> GetAllRegion()
         {
             BranchInfo br = new BranchInfo();
             return br.GetAllBranchNames();            
         }
 
-       [HttpPost]
+        [HttpPost]
         public ActionResult Contact(AppointmentModel app)
         {
-            //User user = app.UserCustomer;
-            ViewBag.username = "lkj";
-            /*db.Users.Add(user);
-            db.SaveChanges();*/
+            ViewBag.user = app.UserCustomer;
             return View();
         }
+
+        [HttpPost]
+        public ActionResult BookingAppointment(AppointmentModel app)
+        {
+            SlotInfo slotinfo = new SlotInfo();
+           // int success = slotinfo.SetSlot(app);
+            return View();
+        }
+
+
 
         private IEnumerable<SelectListItem> GetSelectListBranch(IEnumerable<string> elements)
         {
@@ -117,6 +173,12 @@ namespace Contoso.Controllers
             }
 
             return selectList;
+        }
+
+        public ActionResult Thankyou()
+        {
+            TempData["alertMessage"] = "Whatever you want to alert the user with";
+            return View();
         }
 
 

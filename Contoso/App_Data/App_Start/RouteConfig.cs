@@ -20,6 +20,11 @@ namespace Contoso
                 new { controller = "Appointment", action = "Done", id = UrlParameter.Optional}  // Parameter defaults
             );
 
+            routes.MapRoute(
+               "Book",                                           // Route name
+               "ConfirmBooking/{index}/{id}",                            // URL with parameters
+               new { controller = "ConfirmBooking", action = "Index", id = UrlParameter.Optional }  // Parameter defaults
+           );
            
 
             routes.MapRoute(
@@ -27,8 +32,8 @@ namespace Contoso
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            
 
-           
 
 
         }

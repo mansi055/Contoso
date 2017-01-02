@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Contoso.Models;
 
 namespace Contoso.Controllers
 {
@@ -13,10 +14,16 @@ namespace Contoso.Controllers
             return View();
         }
 
-        public ActionResult About()
+        [HttpPost]
+        public ActionResult Index(AppointmentModel app)
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.m = app.DoctorId;
+            return RedirectToAction("Book");
+        }
 
+        public ActionResult About(AppointmentModel app)
+        {
+            ViewBag.m = app.DoctorId;
             return View();
         }
 
@@ -27,6 +34,11 @@ namespace Contoso.Controllers
             return View();
         }
 
-        
+       [HttpPost]
+        public ActionResult Book(AppointmentModel app)
+        {
+            ViewBag.m = app.DoctorId;
+            return View();
+        }
     }
 }

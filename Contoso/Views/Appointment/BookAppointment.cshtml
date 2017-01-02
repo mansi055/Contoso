@@ -1,9 +1,15 @@
-﻿
+﻿@model Contoso.Models.AppointmentModel
 @{
-    ViewBag.Title = "BookAppointment";
+    ViewBag.Title = "BookingAppointment";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>BookAppointment</h2>
 
-@ViewBag.username
+@if (ViewBag.did != null)
+{
+    foreach (var item in (Dictionary<int, TimeSpan>)ViewBag.did)
+    {
+        <p>@item.Key</p>
+        <p>@item.Value</p>
+    }
+}

@@ -288,6 +288,8 @@
     <Content Include="Views\Appointment\BookAppointment.cshtml" />
     <Content Include="Views\ConfirmBooking\Index.cshtml" />
     <Content Include="Views\Appointment\Contact.cshtml" />
+    <Content Include="Views\Home\Book.cshtml" />
+    <Content Include="Views\Appointment\Thankyou.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

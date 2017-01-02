@@ -1,4 +1,4 @@
-﻿
+﻿@model Contoso.Models.AppointmentModel
 @{
     ViewBag.Title = "Contact";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,3 +6,11 @@
 
 <h2>Contact</h2>
 
+@if (ViewBag.user != null)
+{
+    <p>@ViewBag.FirstName</p>
+    <p>@ViewBag.LastName</p>
+    <p>@ViewBag.Age</p>
+    <p>@ViewBag.PhoneNumber</p>
+    <p>@ViewBag.Email</p>
+}
