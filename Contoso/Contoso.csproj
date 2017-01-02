@@ -201,6 +201,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AppointmentController.cs" />
     <Compile Include="Controllers\BranchInfo.cs" />
+    <Compile Include="Controllers\ConfirmBookingController.cs" />
     <Compile Include="Controllers\DoctorService.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -284,6 +285,9 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\Appointment\Index.cshtml" />
     <Content Include="Views\Appointment\Done.cshtml" />
+    <Content Include="Views\Appointment\BookAppointment.cshtml" />
+    <Content Include="Views\ConfirmBooking\Index.cshtml" />
+    <Content Include="Views\Appointment\Contact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -318,7 +322,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1911</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1911/</IISUrl>
+          <IISUrl>http://localhost:1911</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

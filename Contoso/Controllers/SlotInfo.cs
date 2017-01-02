@@ -24,13 +24,13 @@ namespace Contoso.Controllers
                 slots.Add(startTime);
                 startTime = startTime.Add(new TimeSpan(0, 15, 0));
             }
-
-            return AvailableSlots(app.DoctorId, slots);
+            return slots;
+            //return AvailableSlots(app.DoctorId, slots);
         }
 
-        public List<TimeSpan> AvailableSlots(int docid, List<TimeSpan> slots)
+        public Dictionary<TimeSpan, string> AvailableSlots(int docid, List<TimeSpan> slots)
         {
-            List<TimeSpan> available = new List<TimeSpan>();
+            Dictionary<TimeSpan, string> available = new Dictionary<TimeSpan, string>();
 
             foreach (TimeSpan st in slots)
             {
@@ -38,13 +38,17 @@ namespace Contoso.Controllers
                               where s.DoctorId == docid
                               where s.StartTime == st
                               select s);
-                if(result != null && result.Count() > 0)
+                if(result.Count() == 0)
                 {
-                    available.Add(st);
+                    available.Add(st, "Available");
+                }
+                else
+                {
+                    available.Add(st, "Booked");
                 }
             }
             
            return available;
         }
-    }
+     }
 }

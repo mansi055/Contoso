@@ -51,8 +51,8 @@ namespace Contoso.Controllers
         public ActionResult Done(AppointmentModel app)
         {
             SlotInfo slot = new SlotInfo();
-            ViewBag.slots = slot.GetAvailableSlots(app);
-            
+            List<TimeSpan> slotList = slot.GetAvailableSlots(app);
+            ViewBag.availableSlots = slot.AvailableSlots(app.DoctorId, slotList);
             return View();
         }
 
@@ -73,6 +73,17 @@ namespace Contoso.Controllers
             BranchInfo br = new BranchInfo();
             return br.GetAllBranchNames();            
         }
+
+       [HttpPost]
+        public ActionResult Contact(AppointmentModel app)
+        {
+            //User user = app.UserCustomer;
+            ViewBag.username = "lkj";
+            /*db.Users.Add(user);
+            db.SaveChanges();*/
+            return View();
+        }
+
         private IEnumerable<SelectListItem> GetSelectListBranch(IEnumerable<string> elements)
         {
             // Create an empty list to hold result of the operation
